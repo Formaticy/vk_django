@@ -1,10 +1,10 @@
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 
-from .models import Users
-from .serializers import UserSerializer
+from .models import Users, Friends, Statuses
+from .serializers import UserSerializer, FriendsSerializer, StatusesSerializer
 
 
 # Create your views here.
@@ -21,6 +21,7 @@ class UsersList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UsersDetail(APIView):
     def get_object(self, username):
@@ -46,3 +47,13 @@ class UsersDetail(APIView):
         user = self.get_object(username)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class StatusesList(generics.ListCreateAPIView):
+    queryset = Statuses.objects.all()
+    serializer_class = StatusesSerializer
+
+
+class StatusesDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Statuses.objects.all()
+    serializer_class = StatusesSerializer
