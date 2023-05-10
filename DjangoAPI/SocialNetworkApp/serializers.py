@@ -24,3 +24,5 @@ class StatusesSerializer(ModelSerializer):
     class Meta:
         model = Statuses
         fields = '__all__'
+
+#a
